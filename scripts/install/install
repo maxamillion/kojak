@@ -332,7 +332,7 @@ cat > /tmp/kojid.conf.patch << 'EOF'
  
  ;client certificate
 -;cert = /etc/kojid/client.crt
-+cert = /etc/pki/koji/kojibuilder.pem
++cert = /etc/pki/koji/kojibuilder1.pem
  
  ;certificate of the CA that issued the client certificate
 -;ca = /etc/kojid/clientca.crt
@@ -663,7 +663,7 @@ echo -e "Generating component keys and signing certificates\n"
 echo -e "y\ny" > ${CRTHOME}/response.txt
 
 # Create certificates for the koji components.
-for USER in koji kojiadmin kojira kojiweb kojihub kojibuilder
+for USER in koji kojiadmin kojira kojiweb kojihub kojibuilder1
 do
     echo "creating certificate for ${USER} ..."
     openssl genrsa -out ${CRTHOME}/certs/${USER}.key 2048
@@ -733,15 +733,15 @@ ${PROG} add-host-to-channel ${HOST} livecd
 ${PROG} add-host-to-channel ${HOST} maven
 ${PROG} add-host-to-channel ${HOST} vm
 ${PROG} grant-permission repo kojira
-${PROG} grant-permission build kojibuilder
+${PROG} grant-permission build kojibuilder1
 "
 echo -e "\nUpdating permissions..."
 echo -e "UPDATE host set user_id = '3' where name = 'kojibuilder1.localdomain';\
 UPDATE host set name = 'kojibuilder1' where name = 'kojibuilder1.localdomain';\
-UPDATE users set usertype = '1' where name = 'kojibuilder';\
-DELETE from users where name = 'kojibuilder1.localdomain';\q" >> /tmp/kojibuilder.sql
-su -l koji -c "psql koji koji < /tmp/kojibuilder.sql"
-rm /tmp/kojibuilder.sql
+UPDATE users set usertype = '1' where name = 'kojibuilder1';\
+DELETE from users where name = 'kojibuilder1.localdomain';\q" >> /tmp/kojibuilder1.sql
+su -l koji -c "psql koji koji < /tmp/kojibuilder1.sql"
+rm /tmp/kojibuilder1.sql
 
 echo -e "\nService Status..."
 service postgresql restart

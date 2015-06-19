@@ -60,7 +60,7 @@ ${HOME}/kojak.log
 for file in ${LOG_FILES}; do rm -f $file || echo "$file not found"; done
 
 # Remove users and groups
-USERS="koji mock kojibuilder postgres apache jenkins"
+USERS="koji mock kojibuilder1 postgres apache jenkins"
 for user in ${USERS}; do userdel -rf $user; groupdel $user; done > /dev/null 2>&1  
 
 # Update mlocate database
